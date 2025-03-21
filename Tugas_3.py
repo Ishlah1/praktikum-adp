@@ -7,14 +7,12 @@ P(N(t)=n)=e^(-λt) 〖(λt)〗^n/n!
 batas_n = int (input("masukan nilai n:"))
 print (" ")
 e = 2.71828
-n = 1
+n = 0
+faktorial = 1
+Pn = e ** (-λt)
 
 while batas_n >= n:
-    N = 1
-    i = 1
-    while i <= n:
-        N = N * i
-        i = i + 1
-    Pn = (e**-λt) * (λt**n) / N
     print (f"untuk P(N(t) = {n}) = {Pn}")
-    n = n + 1   
+    faktorial = faktorial * (n+1)
+    Pn = (Pn * λt)/(n+1)
+    n = n +1
