@@ -1,57 +1,37 @@
-import random
-from termcolor import colored
+import os as a
+import time as t
+from termcolor import cprint as warna
 
-# Fungsi untuk membuat parkiran bernomor
-def buat_parkiran(baris, kolom):
-    nomor = 1
-    return [[(nomor := nomor + 1) - 1 if random.choice([True, False]) else 0 for _ in range(kolom)] for _ in range(baris)]
+j=0
+gelombang=[0,1,2,3,4,3,2,1]
 
-# Parkiran
-parkiran_mobil_truk = buat_parkiran(4, 6)  # Lantai 1
-parkiran_motor = buat_parkiran(3, 8)       # Lantai 2
+def hapus():
+    a.system('cls')
 
-def tampilkan_parkiran(parkiran):
-    nomor_slot = 1
-    for baris in parkiran:
-        for slot in baris:
-            nomor_str = f"{nomor_slot:02}"
-            if slot:  # Slot terisi
-                print(colored(f"[{nomor_str}]", "white", "on_red"), end=" ")
-            else:     # Slot kosong
-                print(colored(f"[{nomor_str}]", "white", "on_green"), end=" ")
-            nomor_slot += 1
-        print()
-
-def main():
-    print("=== SISTEM MANAJEMEN PARKIRAN ===")
-    print("Pilih jenis kendaraan:")
-    print("1. Mobil")
-    print("2. Motor")
-    print("3. Truk")
-
-    pilihan = input("Masukkan pilihan (1-3): ")
-
-    if pilihan == "1":
-        kendaraan = "Mobil"
-        lantai = 1
-        parkiran = parkiran_mobil_truk
-    elif pilihan == "2":
-        kendaraan = "Motor"
-        lantai = 2
-        parkiran = parkiran_motor
-    elif pilihan == "3":
-        kendaraan = "Truk"
-        lantai = 1
-        parkiran = parkiran_mobil_truk
-    else:
-        print(colored("Pilihan tidak valid!", "red"))
-        return
-
-    print(f"\nKendaraan: {kendaraan}")
-    print(f"Diarahkan ke Lantai {lantai}")
-    print("Tampilan Parkiran:\n")
-    print("Merah : Terisi"" \n""Hijau : Kosong")
-    tampilkan_parkiran(parkiran)
-
-if __name__ == "__main__":
-    main()
+def tiang_bendera(j):
+    for i in range(1):
+        for k in range(4):
+            y=(j+k)%len(gelombang)
+            x=gelombang[y]
+            print("   ",end='')
+            warna ("|", "dark_grey","on_dark_grey", end="")
+            warna(" "*x+" "*25, "red", "on_red")
+    for i in range(1):
+        for k in range(4):
+            y=(4+j+k)%len(gelombang)
+            x=gelombang[y]
+            print("   ",end='')
+            warna ("|", "dark_grey","on_dark_grey", end="")
+            warna(" "*x+" "*25, "white", "on_white")
+    for i in range(10):
+        print("   ",end='')
+        warna ("|", "dark_grey","on_dark_grey")
+    print("  ",end="")
+    warna ("   ","dark_grey","on_dark_grey")
+    warna ("       ","dark_grey","on_dark_grey")
+    
+while True:
+    hapus()
+    tiang_bendera(j)
+    j+=1  
+    t.sleep(0.08)
