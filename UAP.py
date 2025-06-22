@@ -3,16 +3,19 @@ import time
 from datetime import datetime
 from termcolor import colored
 
-# File penyimpanan
 DATA_FILE = "data_kendaraan.txt"
 PENDAPATAN_FILE = "pendapatan_harian.txt"
 PARKIRAN_FILE = "data_parkiran.txt"
 
-# Fungsi membuat layout parkiran kosong
 def buat_parkiran(baris, kolom):
-    return [[0 for _ in range(kolom)] for _ in range(baris)]
+    parkiran = []
+    for _ in range(baris):
+        row = []
+        for _ in range(kolom):
+            row.append(0)
+        parkiran.append(row)
+    return parkiran
 
-# Load parkiran dari file
 if os.path.exists(PARKIRAN_FILE):
     with open(PARKIRAN_FILE, "r") as f:
         lines = f.readlines()
@@ -29,7 +32,6 @@ else:
         "lantai_2": buat_parkiran(4, 5)
     }
 
-# Load kendaraan dari file
 data_kendaraan = {}
 if os.path.exists(DATA_FILE):
     with open(DATA_FILE, "r") as f:
@@ -42,7 +44,6 @@ if os.path.exists(DATA_FILE):
                     "waktu_masuk": datetime.strptime(waktu_str, "%Y-%m-%d %H:%M:%S")
                 }
 
-# Load pendapatan
 pendapatan_harian = 0
 if os.path.exists(PENDAPATAN_FILE):
     with open(PENDAPATAN_FILE, "r") as f:
@@ -51,7 +52,6 @@ if os.path.exists(PENDAPATAN_FILE):
         except:
             pendapatan_harian = 0
 
-# Simpan semua data
 def simpan_data():
     with open(DATA_FILE, "w") as f:
         for key, val in data_kendaraan.items():
@@ -86,15 +86,15 @@ def animasi(text):
         time.sleep(0.05)
 
 def struk_masuk(lantai, slot, jenis, waktu):
-    print(f"""
+    print(f'''
     ========= STRUK MASUK =========
     Kendaraan   : {jenis.upper()}
     Lantai      : {lantai.upper()}
     Slot        : {slot}
     Waktu Masuk : {waktu.strftime('%Y-%m-%d %H:%M:%S')}
     ===============================
-    """)
-    input("Tekan Enter untuk lanjut...")
+    ''')
+    input("Enter untuk lanjut...")
 
 def struk_keluar(lantai, slot, data):
     global pendapatan_harian
@@ -106,7 +106,7 @@ def struk_keluar(lantai, slot, data):
     total = jam * tarif[data['jenis']]
     pendapatan_harian += total
 
-    print(f"""
+    print(f'''
     ========= STRUK KELUAR =========
     Kendaraan   : {data['jenis'].upper()}
     Lantai      : {lantai.upper()}
@@ -117,14 +117,13 @@ def struk_keluar(lantai, slot, data):
     Tarif        : Rp {tarif[data['jenis']]:,} / jam
     Total Bayar  : Rp {total:,}
     ================================
-    """)
-    input("Tekan Enter untuk lanjut...")
+    ''')
+    input("Enter untuk lanjut...")
 
 def laporan():
     print(f"\nTotal pendapatan hari ini: Rp {pendapatan_harian:,}")
     time.sleep(3)
 
-# Program utama
 while True:
     tampilkan_parkiran()
     print("1. Masuk Parkir\n2. Keluar Parkir\n3. Lihat Pendapatan\n4. Keluar Program")
@@ -132,7 +131,7 @@ while True:
 
     if pilihan == "4":
         simpan_data()
-        print("✅ Data disimpan. Program keluar.")
+        print("✅ Data disimpan. Program keluar.😁")
         break
 
     elif pilihan == "1":
@@ -140,7 +139,7 @@ while True:
         jenis_map = {"1": "motor", "2": "mobil", "3": "truk"}
         jenis_input = input("Jenis (1. Motor, 2. Mobil, 3. Truk): ")
         if jenis_input not in jenis_map:
-            print("❌ Jenis tidak valid.")
+            print("❌ Jenis tidak valid ❌")
             continue
         jenis = jenis_map[jenis_input]
         lantai = "lantai_2" if jenis == "motor" else "lantai_1"
@@ -148,7 +147,7 @@ while True:
             slot = int(input("Pilih slot: "))
             i, j = divmod(slot - 1, len(parkiran[lantai][0]))
             if parkiran[lantai][i][j] == 1:
-                print("❌ Slot sudah terisi.")
+                print("❌ Slot sudah terisi ❌")
                 continue
             animasi("Masuk Parkiran")
             parkiran[lantai][i][j] = 1
@@ -156,7 +155,7 @@ while True:
             struk_masuk(lantai, slot, jenis, waktu)
             data_kendaraan[f"{lantai}_{slot}"] = {"jenis": jenis, "waktu_masuk": waktu}
         except:
-            print("❌ Input tidak valid.")
+            print("❌ Input tidak valid ❌")
 
     elif pilihan == "2":
         tampilkan_parkiran()
@@ -167,17 +166,17 @@ while True:
             i, j = divmod(slot - 1, len(parkiran[lantai][0]))
             key = f"{lantai}_{slot}"
             if parkiran[lantai][i][j] == 0 or key not in data_kendaraan:
-                print("❌ Tidak ada kendaraan di slot ini.")
+                print("❌ Tidak ada kendaraan di slot ini ❌")
                 continue
             animasi("Keluar Parkiran")
             struk_keluar(lantai, slot, data_kendaraan[key])
             parkiran[lantai][i][j] = 0
             del data_kendaraan[key]
         except:
-            print("❌ Input tidak valid.")
+            print("❌ Input tidak valid ❌")
 
     elif pilihan == "3":
         laporan()
 
     else:
-        print("❌ Menu tidak tersedia.")
+        print("❌ Menu tidak tersedia ❌")
