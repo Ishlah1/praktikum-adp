@@ -122,7 +122,7 @@ def struk_keluar(lantai, slot, data):
 
 def laporan():
     print(f"\nTotal pendapatan hari ini: Rp {pendapatan_harian:,}")
-    time.sleep(3)
+    input("Enter untuk lanjut...")
 
 while True:
     tampilkan_parkiran()
