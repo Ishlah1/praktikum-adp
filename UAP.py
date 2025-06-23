@@ -33,15 +33,24 @@ def tampilkan_parkiran():
     os.system('cls')
     print("\n========== LAYOUT PARKIRAN ==========\n")
     for lantai in parkiran:
-        print(f"{lantai.upper()} ({'Mobil/Truk' if lantai == 'lantai_1' else 'Motor'})")
+        if lantai == 'lantai_1':
+            jenis = 'Mobil/Truk'
+        else:
+            jenis = 'Motor'
+        print(f"{lantai.upper()} ({jenis})")
         nomor = 1
         for baris in parkiran[lantai]:
             for slot in baris:
-                warna = "on_red" if slot else "on_green"
-                print(colored(f"[{nomor:02}]", "white", warna), end=" ")
+                if slot:
+                    warna = "on_red"
+                else:
+                    warna = "on_green"
+                teks = f"[{nomor:02}]"
+                print(colored(teks, "white", warna), end=" ")
                 nomor += 1
             print()
-    print("====================================\n")
+    print('='*36)
+    print()
 
 def animasi(text):
     for i in range(10):
@@ -142,7 +151,11 @@ while True:
             print("❌ Jenis tidak valid ❌")
             continue
         jenis = jenis_map[jenis_input]
-        lantai = "lantai_2" if jenis == "motor" else "lantai_1"
+        if jenis == "motor":
+            lantai = "lantai_2"
+        else:
+            lantai = "lantai_1"
+
         try:
             slot = int(input("Pilih slot: "))
             i, j = divmod(slot - 1, len(parkiran[lantai][0]))
@@ -160,7 +173,11 @@ while True:
     elif pilihan == "2":
         tampilkan_parkiran()
         lantai_input = input("Lantai (1 atau 2): ")
-        lantai = "lantai_1" if lantai_input == "1" else "lantai_2"
+        if lantai_input == "1":
+            lantai = "lantai_1"
+        else:
+            lantai = "lantai_2"
+
         try:
             slot = int(input("Nomor slot: "))
             i, j = divmod(slot - 1, len(parkiran[lantai][0]))
