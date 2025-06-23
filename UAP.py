@@ -16,42 +16,6 @@ def buat_parkiran(baris, kolom):
         parkiran.append(row)
     return parkiran
 
-if os.path.exists(PARKIRAN_FILE):
-    with open(PARKIRAN_FILE, "r") as f:
-        lines = f.readlines()
-        parkiran = {"lantai_1": [], "lantai_2": []}
-        lantai = "lantai_1"
-        for line in lines:
-            if line.strip() == "lantai_2":
-                lantai = "lantai_2"
-                continue
-            parkiran[lantai].append([int(x) for x in line.strip().split()])
-else:
-    parkiran = {
-        "lantai_1": buat_parkiran(3, 3),
-        "lantai_2": buat_parkiran(4, 5)
-    }
-
-data_kendaraan = {}
-if os.path.exists(DATA_FILE):
-    with open(DATA_FILE, "r") as f:
-        for line in f:
-            bagian = line.strip().split(",")
-            if len(bagian) == 3:
-                key, jenis, waktu_str = bagian
-                data_kendaraan[key] = {
-                    "jenis": jenis,
-                    "waktu_masuk": datetime.strptime(waktu_str, "%Y-%m-%d %H:%M:%S")
-                }
-
-pendapatan_harian = 0
-if os.path.exists(PENDAPATAN_FILE):
-    with open(PENDAPATAN_FILE, "r") as f:
-        try:
-            pendapatan_harian = int(f.read().strip())
-        except:
-            pendapatan_harian = 0
-
 def simpan_data():
     with open(DATA_FILE, "w") as f:
         for key, val in data_kendaraan.items():
@@ -123,6 +87,42 @@ def struk_keluar(lantai, slot, data):
 def laporan():
     print(f"\nTotal pendapatan hari ini: Rp {pendapatan_harian:,}")
     input("Enter untuk lanjut...")
+    
+if os.path.exists(PARKIRAN_FILE):
+    with open(PARKIRAN_FILE, "r") as f:
+        lines = f.readlines()
+        parkiran = {"lantai_1": [], "lantai_2": []}
+        lantai = "lantai_1"
+        for line in lines:
+            if line.strip() == "lantai_2":
+                lantai = "lantai_2"
+                continue
+            parkiran[lantai].append([int(x) for x in line.strip().split()])
+else:
+    parkiran = {
+        "lantai_1": buat_parkiran(3, 3),
+        "lantai_2": buat_parkiran(4, 5)
+    }
+
+data_kendaraan = {}
+if os.path.exists(DATA_FILE):
+    with open(DATA_FILE, "r") as f:
+        for line in f:
+            bagian = line.strip().split(",")
+            if len(bagian) == 3:
+                key, jenis, waktu_str = bagian
+                data_kendaraan[key] = {
+                    "jenis": jenis,
+                    "waktu_masuk": datetime.strptime(waktu_str, "%Y-%m-%d %H:%M:%S")
+                }
+
+pendapatan_harian = 0
+if os.path.exists(PENDAPATAN_FILE):
+    with open(PENDAPATAN_FILE, "r") as f:
+        try:
+            pendapatan_harian = int(f.read().strip())
+        except:
+            pendapatan_harian = 0
 
 while True:
     tampilkan_parkiran()
