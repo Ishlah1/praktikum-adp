@@ -18,8 +18,8 @@ def buat_parkiran(baris, kolom):
 
 def simpan_data():
     with open(DATA_FILE, "w") as f:
-        for key, val in data_kendaraan.items():
-            f.write(f"{key},{val['jenis']},{val['waktu_masuk'].strftime('%Y-%m-%d %H:%M:%S')}\n")
+        for x, y in data_kendaraan.items():
+            f.write(f"{x},{y['jenis']},{y['waktu_masuk'].strftime('%Y-%m-%d %H:%M:%S')}\n")
     with open(PENDAPATAN_FILE, "w") as f:
         f.write(str(pendapatan_harian))
     with open(PARKIRAN_FILE, "w") as f:
